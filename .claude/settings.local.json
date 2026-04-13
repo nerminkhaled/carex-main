@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(flutter pub get)",
+      "Bash(flutter analyze lib/features/medications/view/create_alert_page.dart)"
+    ]
+  }
+}
