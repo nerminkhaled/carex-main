@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class RoleSelectionPage extends StatelessWidget {
+  // StatelessWidget for the role selection page where users choose between patient and doctor roles during signup
   const RoleSelectionPage({super.key});
 
   static const _teal = Color(0xFF1ABFB0);
@@ -10,13 +11,17 @@ class RoleSelectionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // Scaffold widget to provide the basic material design visual layout structure
       resizeToAvoidBottomInset: false,
       backgroundColor: _teal,
       body: SafeArea(
+        // SafeArea widget to avoid system UI intrusions (e.g., notches, status bar)
         child: Column(
           children: [
             _buildHeroSection(context),
-            Expanded(child: _buildContentCard(context)),
+            Expanded(
+              child: _buildContentCard(context),
+            ), // Expanded widget to make the content card take up the remaining space below the hero section
           ],
         ),
       ),
@@ -57,8 +62,11 @@ class RoleSelectionPage extends StatelessWidget {
                   color: Colors.white.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: const Icon(Icons.arrow_back_ios_new,
-                    size: 17, color: Colors.white),
+                child: const Icon(
+                  Icons.arrow_back_ios_new,
+                  size: 17,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),
@@ -97,6 +105,7 @@ class RoleSelectionPage extends StatelessWidget {
   }
 
   Widget _buildContentCard(BuildContext context) {
+    // Build method to create the UI for the content card that contains role selection options
     return Container(
       width: double.infinity,
       decoration: const BoxDecoration(
@@ -163,6 +172,7 @@ class RoleSelectionPage extends StatelessWidget {
 }
 
 class _RoleCard extends StatelessWidget {
+  // Private widget for role selection cards for reusable UI components
   const _RoleCard({
     required this.icon,
     required this.label,
@@ -174,11 +184,13 @@ class _RoleCard extends StatelessWidget {
   final IconData icon;
   final String label;
   final String description;
-  final VoidCallback onTap;
+  final VoidCallback
+  onTap; // Callback function to handle tap events on the role card
   final bool comingSoon;
 
   @override
   Widget build(BuildContext context) {
+    // Build method to create the UI for each role card
     return GestureDetector(
       onTap: comingSoon ? null : onTap,
       child: AnimatedContainer(
@@ -221,9 +233,7 @@ class _RoleCard extends StatelessWidget {
               child: Icon(
                 icon,
                 size: 26,
-                color: comingSoon
-                    ? Colors.black26
-                    : const Color(0xFF1ABFB0),
+                color: comingSoon ? Colors.black26 : const Color(0xFF1ABFB0),
               ),
             ),
             const SizedBox(height: 16),
@@ -247,8 +257,10 @@ class _RoleCard extends StatelessWidget {
             if (comingSoon) ...[
               const SizedBox(height: 12),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: Colors.black12,
                   borderRadius: BorderRadius.circular(20),
