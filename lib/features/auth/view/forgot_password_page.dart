@@ -7,18 +7,22 @@ import '../repository/auth_repository.dart';
 import 'auth_widgets.dart';
 
 class ForgotPasswordPage extends StatelessWidget {
+  // StatelessWidget since it doesn't manage any state directly, all state is handled by the Bloc
   const ForgotPasswordPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => AuthBloc(repository: SupabaseAuthRepository()),
+      create: (_) => AuthBloc(
+        repository: SupabaseAuthRepository(),
+      ), // Provide the AuthBloc to the widget tree, using the SupabaseAuthRepository for authentication operations
       child: const _ForgotPasswordView(),
     );
   }
 }
 
 class _ForgotPasswordView extends StatefulWidget {
+  // StatefulWidget to manage the state of the email input and handle user interactions
   const _ForgotPasswordView();
 
   @override
@@ -33,6 +37,7 @@ class _ForgotPasswordViewState extends State<_ForgotPasswordView> {
 
   @override
   void dispose() {
+    //prevent memory leaks by disposing of the controller when the widget is removed from the widget tree
     _emailController.dispose();
     super.dispose();
   }
@@ -40,17 +45,17 @@ class _ForgotPasswordViewState extends State<_ForgotPasswordView> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
+      // Listen to changes in the AuthBloc state to show feedback to the user based on authentication events (e.g., success or failure of password reset)
       listener: (context, state) {
         if (state is AuthPasswordResetSent) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: const Text(
-                'Reset link sent! Check your inbox.',
-              ),
+              content: const Text('Reset link sent! Check your inbox.'),
               backgroundColor: _teal,
               behavior: SnackBarBehavior.floating,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12)),
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
           );
           context.go('/login');
@@ -61,13 +66,15 @@ class _ForgotPasswordViewState extends State<_ForgotPasswordView> {
               backgroundColor: Colors.redAccent,
               behavior: SnackBarBehavior.floating,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12)),
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
           );
         }
       },
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset:
+            false, // Prevents the layout from resizing when the keyboard appears, maintaining the design integrity of the page
         backgroundColor: const Color(0xFF1ABFB0),
         body: SafeArea(
           child: Column(
@@ -92,7 +99,8 @@ class _ForgotPasswordViewState extends State<_ForgotPasswordView> {
         ),
       ),
       child: Stack(
-        clipBehavior: Clip.none,
+        clipBehavior: Clip
+            .none, // Allow overflow for decorative elements like the 3D asset and sparkle
         children: [
           // 3D clay asset — right, prominent
           Positioned(
@@ -101,7 +109,8 @@ class _ForgotPasswordViewState extends State<_ForgotPasswordView> {
             bottom: 0,
             child: Image.asset(
               'assets/images/login and signup/3D Asset Clay Extra 3 2.png',
-              height: double.infinity,
+              height: double
+                  .infinity, // Make the asset fill the vertical space of the hero section
               fit: BoxFit.contain,
             ),
           ),
@@ -206,10 +215,7 @@ class _ForgotPasswordViewState extends State<_ForgotPasswordView> {
             const SizedBox(height: 6),
             const Text(
               "We'll email you a link to reset your password.",
-              style: TextStyle(
-                fontSize: 13,
-                color: Colors.black45,
-              ),
+              style: TextStyle(fontSize: 13, color: Colors.black45),
             ),
             const SizedBox(height: 24),
             AuthInputField(
@@ -238,10 +244,11 @@ class _ForgotPasswordViewState extends State<_ForgotPasswordView> {
               ? null
               : () {
                   context.read<AuthBloc>().add(
-                        ForgotPasswordSubmitted(
-                          email: _emailController.text.trim(),
-                        ),
-                      );
+                    // When the button is tapped, if it's not currently loading, dispatch an AuthForgotPasswordSubmitted event to the AuthBloc with the email from the input field
+                    ForgotPasswordSubmitted(
+                      email: _emailController.text.trim(),
+                    ),
+                  );
                 },
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
@@ -273,7 +280,9 @@ class _ForgotPasswordViewState extends State<_ForgotPasswordView> {
                       height: 22,
                       width: 22,
                       child: CircularProgressIndicator(
-                          color: _teal, strokeWidth: 2.5),
+                        color: _teal,
+                        strokeWidth: 2.5,
+                      ),
                     )
                   : const Text(
                       'Send Reset Link',
@@ -302,10 +311,7 @@ class _ForgotPasswordViewState extends State<_ForgotPasswordView> {
             children: [
               TextSpan(
                 text: 'Sign in',
-                style: TextStyle(
-                  color: _teal,
-                  fontWeight: FontWeight.w700,
-                ),
+                style: TextStyle(color: _teal, fontWeight: FontWeight.w700),
               ),
             ],
           ),
