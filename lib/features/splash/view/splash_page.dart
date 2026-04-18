@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../bloc/splash_bloc.dart';
 
 class SplashPage extends StatelessWidget {
+  //splash
   const SplashPage({super.key});
 
   @override
@@ -95,21 +96,21 @@ class _SplashBodyState extends State<_SplashBody>
       curve: const Interval(0.25, 0.55, curve: Curves.easeOut),
     );
 
-    _logoSlide = Tween<Offset>(
-      begin: const Offset(0, 0.4),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: const Interval(0.25, 0.55, curve: Curves.easeOut),
-    ));
+    _logoSlide = Tween<Offset>(begin: const Offset(0, 0.4), end: Offset.zero)
+        .animate(
+          CurvedAnimation(
+            parent: _controller,
+            curve: const Interval(0.25, 0.55, curve: Curves.easeOut),
+          ),
+        );
 
-    _waveSlide = Tween<Offset>(
-      begin: const Offset(0, 1),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: const Interval(0.35, 0.7, curve: Curves.easeOut),
-    ));
+    _waveSlide = Tween<Offset>(begin: const Offset(0, 1), end: Offset.zero)
+        .animate(
+          CurvedAnimation(
+            parent: _controller,
+            curve: const Interval(0.35, 0.7, curve: Curves.easeOut),
+          ),
+        );
 
     _illustrationFade = CurvedAnimation(
       parent: _controller,
