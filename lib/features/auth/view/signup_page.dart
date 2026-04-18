@@ -6,29 +6,36 @@ import '../bloc/auth_bloc.dart';
 import '../repository/auth_repository.dart';
 import 'auth_widgets.dart';
 
-
 class SignupPage extends StatelessWidget {
+  //statelass widget for signup page
   const SignupPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => AuthBloc(repository: SupabaseAuthRepository()),
-      child: const _PatientSignupView(),
+      //injecting the AuthBloc into the widget tree so that _PatientSignupView can access it
+      create: (_) => AuthBloc(
+        repository: SupabaseAuthRepository(),
+      ), //creating an instance of AuthBloc with SupabaseAuthRepository
+      child:
+          const _PatientSignupView(), //the actual signup form view child of the BlocProvider
     );
   }
 }
 
 class _PatientSignupView extends StatefulWidget {
+  //stateful widget for the signup form to manage form state and user input
   const _PatientSignupView();
 
   @override
-  State<_PatientSignupView> createState() => _PatientSignupViewState();
+  State<_PatientSignupView> createState() => _PatientSignupViewState(); //creating the mutable state for the signup form
 }
 
 class _PatientSignupViewState extends State<_PatientSignupView> {
+  //state class that holds the form controllers, validation logic, and UI for the signup page
   final _nameController = TextEditingController();
-  final _emailController = TextEditingController();
+  final _emailController =
+      TextEditingController(); //texteditting controllers to capture user input for name, email, password, phone, date of birth, and medical conditions
   final _passwordController = TextEditingController();
   final _phoneController = TextEditingController();
   final _dobController = TextEditingController();
@@ -48,17 +55,23 @@ class _PatientSignupViewState extends State<_PatientSignupView> {
     _phoneController.dispose();
     _dobController.dispose();
     _conditionsController.dispose();
-    super.dispose();
+    super
+        .dispose(); //super.dispose() to clean up the controllers when the widget is removed from the tree to prevent memory leaks
   }
 
   Future<void> _pickDate() async {
+    //function to show a custom date picker bottom sheet and update the date of birth field when a date is selected
     final picked = await showModalBottomSheet<DateTime>(
+      //modelbottomsheet is a popup that appears from bottom
+      //showing a modal bottom sheet that returns a DateTime when a date is selected
       context: context,
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
-      builder: (_) => const _CalendarSheet(),
+      builder: (_) =>
+          const _CalendarSheet(), //the content of the bottom sheet is the _CalendarSheet widget defined below
     );
     if (picked != null) {
+      //if a date was picked, update the _dobController text with the selected date formatted as MM/DD/YYYY
       _dobController.text =
           '${picked.month.toString().padLeft(2, '0')}/${picked.day.toString().padLeft(2, '0')}/${picked.year}';
     }
@@ -66,34 +79,37 @@ class _PatientSignupViewState extends State<_PatientSignupView> {
 
   @override
   Widget build(BuildContext context) {
+    //build method that constructs the UI of the signup page and listens for authentication state changes to show success or error messages and navigate accordingly
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
-  print('UI STATE: $state');
+        //listening for changes in the AuthBloc state to react to authentication events such as successful signup, email confirmation required, or failure
+        print('UI STATE: $state');
 
-  if (state is AuthSuccess) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Signup successful')),
-    );
-    context.go('/home');
-  } else if (state is AuthEmailConfirmationRequired) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(state.message),
-        backgroundColor: Colors.green,
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
-    context.go('/login');
-  } else if (state is AuthFailure) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(state.message),
-        backgroundColor: Colors.redAccent,
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
-  }
-},
+        if (state is AuthSuccess) {
+          ScaffoldMessenger.of(
+            //showing a snackbar message on successful signup and navigating to the home page
+            context,
+          ).showSnackBar(const SnackBar(content: Text('Signup successful')));
+          context.go('/home');
+        } else if (state is AuthEmailConfirmationRequired) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: Colors.green,
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+          context.go('/login');
+        } else if (state is AuthFailure) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: Colors.redAccent,
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+        }
+      },
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: _teal,
@@ -111,7 +127,9 @@ class _PatientSignupViewState extends State<_PatientSignupView> {
 
   Widget _buildHeroSection(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.25,
+      height:
+          MediaQuery.of(context).size.height *
+          0.25, //responsive height for the hero section
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           colors: [Color(0xFF0C9D91), _teal],
@@ -120,7 +138,8 @@ class _PatientSignupViewState extends State<_PatientSignupView> {
         ),
       ),
       child: Stack(
-        clipBehavior: Clip.none,
+        clipBehavior: Clip
+            .none, //allowing the image to overflow outside the container bounds for a more dynamic design
         children: [
           Positioned(
             right: -8,
@@ -143,8 +162,11 @@ class _PatientSignupViewState extends State<_PatientSignupView> {
                   color: Colors.white.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: const Icon(Icons.arrow_back_ios_new,
-                    size: 17, color: Colors.white),
+                child: const Icon(
+                  Icons.arrow_back_ios_new,
+                  size: 17,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),
@@ -197,6 +219,7 @@ class _PatientSignupViewState extends State<_PatientSignupView> {
         ],
       ),
       child: SingleChildScrollView(
+        //allowing the form to be scrollable when the keyboard is open or on smaller screens
         padding: const EdgeInsets.fromLTRB(24, 24, 24, 32),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -296,6 +319,7 @@ class _PatientSignupViewState extends State<_PatientSignupView> {
   }
 
   String? _validate() {
+    //if any validation fails, return an error message string; otherwise return null if all inputs are valid
     final name = _nameController.text.trim();
     final email = _emailController.text.trim();
     final password = _passwordController.text;
@@ -315,6 +339,7 @@ class _PatientSignupViewState extends State<_PatientSignupView> {
   }
 
   Widget _buildSubmitButton(BuildContext context) {
+    //building the submit button that triggers form validation and dispatches the SignupSubmitted event to the AuthBloc when pressed, showing a loading indicator while the signup process is ongoing
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
         final isLoading = state is AuthLoading;
@@ -334,20 +359,21 @@ class _PatientSignupViewState extends State<_PatientSignupView> {
                     return;
                   }
                   context.read<AuthBloc>().add(
-                        SignupSubmitted(
-                          name: _nameController.text.trim(),
-                          email: _emailController.text.trim(),
-                          password: _passwordController.text,
-                          phone: _phoneController.text.trim(),
-                          role: 'patient',
-                          dateOfBirth: _dobController.text,
-                          gender: _gender,
-                          medicalConditions:
-                              _conditionsController.text.trim().isEmpty
-                                  ? null
-                                  : _conditionsController.text.trim(),
-                        ),
-                      );
+                    //start the signup process by dispatching the SignupSubmitted event with the form data to the AuthBloc
+                    SignupSubmitted(
+                      name: _nameController.text.trim(),
+                      email: _emailController.text.trim(),
+                      password: _passwordController.text,
+                      phone: _phoneController.text.trim(),
+                      role: 'patient',
+                      dateOfBirth: _dobController.text,
+                      gender: _gender,
+                      medicalConditions:
+                          _conditionsController.text.trim().isEmpty
+                          ? null
+                          : _conditionsController.text.trim(),
+                    ),
+                  );
                 },
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
@@ -379,7 +405,9 @@ class _PatientSignupViewState extends State<_PatientSignupView> {
                       height: 22,
                       width: 22,
                       child: CircularProgressIndicator(
-                          color: _teal, strokeWidth: 2.5),
+                        color: _teal,
+                        strokeWidth: 2.5,
+                      ),
                     )
                   : const Text(
                       'Create Account',
@@ -399,19 +427,18 @@ class _PatientSignupViewState extends State<_PatientSignupView> {
 
   Widget _buildLoginLink(BuildContext context) {
     return Center(
+      // centering the login link text and making it tappable to navigate to the login page for users who already have an account
       child: GestureDetector(
         onTap: () => context.go('/login'),
         child: RichText(
+          //using RichText to create a text link that navigates to the login page when tapped
           text: const TextSpan(
             text: 'Already have an account? ',
             style: TextStyle(color: Colors.black45, fontSize: 13.5),
             children: [
               TextSpan(
                 text: 'Login',
-                style: TextStyle(
-                  color: _teal,
-                  fontWeight: FontWeight.w700,
-                ),
+                style: TextStyle(color: _teal, fontWeight: FontWeight.w700),
               ),
             ],
           ),
@@ -438,13 +465,23 @@ class _CalendarSheetState extends State<_CalendarSheet> {
 
   static const _weekdays = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
   static const _months = [
-    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
   ];
 
   void _prevMonth() => setState(() {
-        _displayed = DateTime(_displayed.year, _displayed.month - 1);
-      });
+    _displayed = DateTime(_displayed.year, _displayed.month - 1);
+  });
 
   void _nextMonth() {
     final next = DateTime(_displayed.year, _displayed.month + 1);
@@ -455,8 +492,7 @@ class _CalendarSheetState extends State<_CalendarSheet> {
     final first = DateTime(_displayed.year, _displayed.month, 1);
     // Monday = 1 … Sunday = 7; offset so Monday is column 0
     final startOffset = first.weekday - 1;
-    final daysInMonth =
-        DateTime(_displayed.year, _displayed.month + 1, 0).day;
+    final daysInMonth = DateTime(_displayed.year, _displayed.month + 1, 0).day;
     return [
       ...List.filled(startOffset, null),
       for (int d = 1; d <= daysInMonth; d++)
@@ -494,13 +530,18 @@ class _CalendarSheetState extends State<_CalendarSheet> {
             padding: const EdgeInsets.fromLTRB(20, 14, 12, 4),
             child: Row(
               children: [
-                const Text('Select date',
-                    style: TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.w600)),
+                const Text(
+                  'Select date',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                ),
                 const Spacer(),
                 IconButton(
                   onPressed: () => Navigator.pop(context),
-                  icon: const Icon(Icons.close, size: 20, color: Colors.black45),
+                  icon: const Icon(
+                    Icons.close,
+                    size: 20,
+                    color: Colors.black45,
+                  ),
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
                 ),
@@ -520,15 +561,22 @@ class _CalendarSheetState extends State<_CalendarSheet> {
                 Text(
                   '${_months[_displayed.month - 1]} ${_displayed.year}',
                   style: const TextStyle(
-                      fontSize: 15, fontWeight: FontWeight.w600),
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
                 IconButton(
                   onPressed: _nextMonth,
-                  icon: Icon(Icons.chevron_right,
-                      color: DateTime(_displayed.year, _displayed.month + 1)
-                              .isAfter(DateTime.now())
-                          ? Colors.black26
-                          : Colors.black54),
+                  icon: Icon(
+                    Icons.chevron_right,
+                    color:
+                        DateTime(
+                          _displayed.year,
+                          _displayed.month + 1,
+                        ).isAfter(DateTime.now())
+                        ? Colors.black26
+                        : Colors.black54,
+                  ),
                 ),
               ],
             ),
@@ -538,15 +586,20 @@ class _CalendarSheetState extends State<_CalendarSheet> {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Row(
               children: _weekdays
-                  .map((d) => Expanded(
-                        child: Center(
-                          child: Text(d,
-                              style: const TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.black38)),
+                  .map(
+                    (d) => Expanded(
+                      child: Center(
+                        child: Text(
+                          d,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black38,
+                          ),
                         ),
-                      ))
+                      ),
+                    ),
+                  )
                   .toList(),
             ),
           ),
@@ -568,17 +621,21 @@ class _CalendarSheetState extends State<_CalendarSheet> {
                 final day = days[i];
                 if (day == null) return const SizedBox();
 
-                final isSelected = _selected != null &&
+                final isSelected =
+                    _selected != null &&
                     day.year == _selected!.year &&
                     day.month == _selected!.month &&
                     day.day == _selected!.day;
-                final isToday = day.year == DateTime.now().year &&
+                final isToday =
+                    day.year == DateTime.now().year &&
                     day.month == DateTime.now().month &&
                     day.day == DateTime.now().day;
                 final disabled = _isFuture(day);
 
                 return GestureDetector(
-                  onTap: disabled ? null : () => setState(() => _selected = day),
+                  onTap: disabled
+                      ? null
+                      : () => setState(() => _selected = day),
                   child: Container(
                     margin: const EdgeInsets.all(2),
                     decoration: BoxDecoration(
@@ -599,8 +656,8 @@ class _CalendarSheetState extends State<_CalendarSheet> {
                           color: isSelected
                               ? Colors.white
                               : disabled
-                                  ? Colors.black26
-                                  : Colors.black87,
+                              ? Colors.black26
+                              : Colors.black87,
                         ),
                       ),
                     ),
@@ -626,11 +683,13 @@ class _CalendarSheetState extends State<_CalendarSheet> {
                   foregroundColor: Colors.white,
                   elevation: 0,
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14)),
+                    borderRadius: BorderRadius.circular(14),
+                  ),
                 ),
-                child: const Text('Save Date',
-                    style: TextStyle(
-                        fontSize: 15, fontWeight: FontWeight.w600)),
+                child: const Text(
+                  'Save Date',
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                ),
               ),
             ),
           ),
@@ -662,10 +721,7 @@ class _GenderButton extends StatelessWidget {
         decoration: BoxDecoration(
           color: selected ? const Color(0xFF1ABFB0) : Colors.white,
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-            color: const Color(0xFF1ABFB0),
-            width: 1.5,
-          ),
+          border: Border.all(color: const Color(0xFF1ABFB0), width: 1.5),
           boxShadow: selected
               ? []
               : [
