@@ -451,10 +451,11 @@ class _PatientSignupViewState extends State<_PatientSignupView> {
 // ─── Calendar date-picker bottom sheet ───────────────────────────────────────
 
 class _CalendarSheet extends StatefulWidget {
+  //create stateful widget for the custom calendar date-picker that appears as a bottom sheet when selecting the date of birth field in the signup form
   const _CalendarSheet();
 
   @override
-  State<_CalendarSheet> createState() => _CalendarSheetState();
+  State<_CalendarSheet> createState() => _CalendarSheetState(); //take state for managing the displayed month, selected date, and calendar logic for rendering the days and handling user interaction within the calendar sheet
 }
 
 class _CalendarSheetState extends State<_CalendarSheet> {
@@ -480,7 +481,11 @@ class _CalendarSheetState extends State<_CalendarSheet> {
   ];
 
   void _prevMonth() => setState(() {
-    _displayed = DateTime(_displayed.year, _displayed.month - 1);
+    //updating the state to show the previous month in the calendar when the left arrow button is pressed, ensuring that the month does not go before January 1900
+    _displayed = DateTime(
+      _displayed.year,
+      _displayed.month - 1,
+    ); //same yaer perv month
   });
 
   void _nextMonth() {
@@ -495,12 +500,15 @@ class _CalendarSheetState extends State<_CalendarSheet> {
     final daysInMonth = DateTime(_displayed.year, _displayed.month + 1, 0).day;
     return [
       ...List.filled(startOffset, null),
+      //move list of days to correct starting column based on the weekday of the first day of the month by adding null values for the empty cells before the first day
       for (int d = 1; d <= daysInMonth; d++)
         DateTime(_displayed.year, _displayed.month, d),
     ];
   }
 
-  bool _isFuture(DateTime d) => d.isAfter(DateTime.now());
+  bool _isFuture(DateTime d) => d.isAfter(
+    DateTime.now(),
+  ); //helper function to determine if a given date is in the future, used to disable selection of future dates in the calendar
 
   @override
   Widget build(BuildContext context) {
@@ -536,9 +544,11 @@ class _CalendarSheetState extends State<_CalendarSheet> {
                 ),
                 const Spacer(),
                 IconButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () => Navigator.pop(
+                    context,
+                  ), //close the bottom sheet when the close icon is pressed
                   icon: const Icon(
-                    Icons.close,
+                    Icons.close, //close icon to dismiss the calendar sheet
                     size: 20,
                     color: Colors.black45,
                   ),
