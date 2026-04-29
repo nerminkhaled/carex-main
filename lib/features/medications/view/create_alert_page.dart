@@ -18,17 +18,19 @@ class _DosageData {
   String period; // 'AM' | 'PM'
   String mealTiming; // 'before' | 'after'
 
-  _DosageData()
-    : doseNumber = 1,
+  _DosageData() // constructor with default values
+    : doseNumber = 1, // : Initializer list of default values for each field
       doseUnit = 'Pills',
       hour = 8,
       minute = 0,
       period = 'AM',
       mealTiming = 'after';
 
-  String get doseLabel => '$doseNumber $doseUnit';
+  String get doseLabel =>
+      '$doseNumber $doseUnit'; // getter to display dose as "2 Pills"
 
   String get timeLabel {
+    // getter to display time as "8:00 AM"
     final m = minute.toString().padLeft(2, '0');
     return '$hour:$m $period';
   }
@@ -38,14 +40,14 @@ class _DosageData {
     int h = hour;
     if (period == 'AM' && h == 12) h = 0;
     if (period == 'PM' && h != 12) h += 12;
-    return '${h.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}';
+    return '${h.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}'; // e.g. "14:30"
   }
 }
 
 // ── Page
 
 class CreateAlertPage extends StatefulWidget {
-  final VoidCallback? onCreated;
+  final VoidCallback? onCreated; // Callback to refresh parent after creation
   const CreateAlertPage({super.key, this.onCreated});
 
   @override
@@ -67,10 +69,9 @@ class _CreateAlertPageState extends State<CreateAlertPage> {
     super.dispose();
   }
 
-  // ── Image picker ───────────────────────────────────────────────────────────
-
+  // ── Image picker
   Future<void> _pickImage(ImageSource source) async {
-    final picker = ImagePicker();
+    final picker = ImagePicker(); // create an instance of ImagePicker
     final picked = await picker.pickImage(
       source: source,
       imageQuality: 80,
@@ -82,6 +83,7 @@ class _CreateAlertPageState extends State<CreateAlertPage> {
   }
 
   void _showImageOptions() {
+    // Show bottom sheet with options to take photo, upload, or remove
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.white,
@@ -90,7 +92,8 @@ class _CreateAlertPageState extends State<CreateAlertPage> {
       ),
       builder: (_) => SafeArea(
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize:
+              MainAxisSize.min, // Wrap content, don't take full height
           children: [
             const SizedBox(height: 8),
             Container(
@@ -179,7 +182,7 @@ class _CreateAlertPageState extends State<CreateAlertPage> {
     );
   }
 
-  // ── Date picker ────────────────────────────────────────────────────────────
+  // ── Date picker
 
   Future<void> _pickDate() async {
     final picked = await showDatePicker(
