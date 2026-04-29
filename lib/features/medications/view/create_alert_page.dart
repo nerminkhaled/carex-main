@@ -8,23 +8,23 @@ import '../../../core/models/schedule_entry.dart';
 import '../../../core/theme/app_theme.dart';
 import '../repository/medication_repository.dart';
 
-// ── Dosage data ───────────────────────────────────────────────────────────────
+// ── Dosage data
 
 class _DosageData {
   int doseNumber;
   String doseUnit; // 'Pills' | 'Drops' | 'Tablets' | 'Capsules' | 'mg' | 'ml'
-  int hour;        // 1–12
-  int minute;      // 0–59
-  String period;   // 'AM' | 'PM'
+  int hour; // 1–12
+  int minute; // 0–59
+  String period; // 'AM' | 'PM'
   String mealTiming; // 'before' | 'after'
 
   _DosageData()
-      : doseNumber = 1,
-        doseUnit = 'Pills',
-        hour = 8,  
-        minute = 0,
-        period = 'AM',
-        mealTiming = 'after';
+    : doseNumber = 1,
+      doseUnit = 'Pills',
+      hour = 8,
+      minute = 0,
+      period = 'AM',
+      mealTiming = 'after';
 
   String get doseLabel => '$doseNumber $doseUnit';
 
@@ -42,7 +42,7 @@ class _DosageData {
   }
 }
 
-// ── Page ──────────────────────────────────────────────────────────────────────
+// ── Page
 
 class CreateAlertPage extends StatefulWidget {
   final VoidCallback? onCreated;
@@ -110,11 +110,15 @@ class _CreateAlertPageState extends State<CreateAlertPage> {
                   color: AppColors.teal.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: const Icon(Icons.camera_alt_outlined,
-                    color: AppColors.teal),
+                child: const Icon(
+                  Icons.camera_alt_outlined,
+                  color: AppColors.teal,
+                ),
               ),
-              title: const Text('Take a photo',
-                  style: TextStyle(fontWeight: FontWeight.w600)),
+              title: const Text(
+                'Take a photo',
+                style: TextStyle(fontWeight: FontWeight.w600),
+              ),
               onTap: () {
                 Navigator.pop(context);
                 _pickImage(ImageSource.camera);
@@ -128,11 +132,15 @@ class _CreateAlertPageState extends State<CreateAlertPage> {
                   color: AppColors.teal.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: const Icon(Icons.photo_library_outlined,
-                    color: AppColors.teal),
+                child: const Icon(
+                  Icons.photo_library_outlined,
+                  color: AppColors.teal,
+                ),
               ),
-              title: const Text('Upload from device',
-                  style: TextStyle(fontWeight: FontWeight.w600)),
+              title: const Text(
+                'Upload from device',
+                style: TextStyle(fontWeight: FontWeight.w600),
+              ),
               onTap: () {
                 Navigator.pop(context);
                 _pickImage(ImageSource.gallery);
@@ -147,13 +155,18 @@ class _CreateAlertPageState extends State<CreateAlertPage> {
                     color: AppColors.pinkRed.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: const Icon(Icons.delete_outline_rounded,
-                      color: AppColors.pinkRed),
+                  child: const Icon(
+                    Icons.delete_outline_rounded,
+                    color: AppColors.pinkRed,
+                  ),
                 ),
-                title: const Text('Remove photo',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.pinkRed)),
+                title: const Text(
+                  'Remove photo',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.pinkRed,
+                  ),
+                ),
                 onTap: () {
                   Navigator.pop(context);
                   setState(() => _image = null);
@@ -267,8 +280,7 @@ class _CreateAlertPageState extends State<CreateAlertPage> {
       // Upload image and update the medication with the URL
       if (_image != null) {
         try {
-          final imageUrl =
-              await repo.uploadMedicationImage(_image!, med.id);
+          final imageUrl = await repo.uploadMedicationImage(_image!, med.id);
           med = await repo.updateMedication(med.copyWith(imageUrl: imageUrl));
         } catch (_) {
           // Image upload failed — medication still saved, just without photo
@@ -304,8 +316,18 @@ class _CreateAlertPageState extends State<CreateAlertPage> {
 
   String _fmtDate(DateTime d) {
     const m = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
     ];
     return '${m[d.month - 1]} ${d.day}, ${d.year}';
   }
@@ -374,124 +396,123 @@ class _CreateAlertPageState extends State<CreateAlertPage> {
   }
 
   Widget _buildHeader() => Padding(
-        padding: const EdgeInsets.fromLTRB(4, 12, 16, 12),
-        child: Row(
-          children: [
-            IconButton(
-              icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20),
-              onPressed: () => Navigator.pop(context),
-            ),
-            const Expanded(
-              child: Text(
-                'Create Alert',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
-              ),
-            ),
-            const SizedBox(width: 48),
-          ],
+    padding: const EdgeInsets.fromLTRB(4, 12, 16, 12),
+    child: Row(
+      children: [
+        IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20),
+          onPressed: () => Navigator.pop(context),
         ),
-      );
+        const Expanded(
+          child: Text(
+            'Create Alert',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
+          ),
+        ),
+        const SizedBox(width: 48),
+      ],
+    ),
+  );
 
   Widget _sectionLabel(String text) => Text(
-        text,
-        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
-      );
+    text,
+    style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+  );
 
   Widget _nameField() => TextField(
-        controller: _nameCtrl,
-        style: const TextStyle(fontSize: 14),
-        decoration: InputDecoration(
-          hintText: 'Enter medicine name',
-          hintStyle: TextStyle(color: Colors.grey[400], fontSize: 14),
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
-          filled: true,
-          fillColor: Colors.grey[50],
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: Colors.grey[200]!),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: Colors.grey[200]!),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: AppColors.teal, width: 1.5),
-          ),
-        ),
-      );
+    controller: _nameCtrl,
+    style: const TextStyle(fontSize: 14),
+    decoration: InputDecoration(
+      hintText: 'Enter medicine name',
+      hintStyle: TextStyle(color: Colors.grey[400], fontSize: 14),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+      filled: true,
+      fillColor: Colors.grey[50],
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(color: Colors.grey[200]!),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(color: Colors.grey[200]!),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: AppColors.teal, width: 1.5),
+      ),
+    ),
+  );
 
   Widget _imageBox() => GestureDetector(
-        onTap: _showImageOptions,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          height: 110,
-          decoration: BoxDecoration(
-            color: Colors.grey[50],
-            border: Border.all(color: Colors.grey[300]!),
-            borderRadius: BorderRadius.circular(14),
-          ),
-          clipBehavior: Clip.antiAlias,
-          child: _image != null
-              ? Stack(
-                  children: [
-                    SizedBox.expand(
-                      child: Image.file(_image!, fit: BoxFit.contain),
-                    ),
-                    Positioned(
-                      top: 8,
-                      right: 8,
-                      child: GestureDetector(
-                        onTap: _showImageOptions,
-                        child: Container(
-                          padding: const EdgeInsets.all(4),
-                          decoration: BoxDecoration(
-                            color: Colors.black54,
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          child: const Icon(Icons.edit_rounded,
-                              color: Colors.white, size: 16),
-                        ),
+    onTap: _showImageOptions,
+    child: AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
+      height: 110,
+      decoration: BoxDecoration(
+        color: Colors.grey[50],
+        border: Border.all(color: Colors.grey[300]!),
+        borderRadius: BorderRadius.circular(14),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: _image != null
+          ? Stack(
+              children: [
+                SizedBox.expand(
+                  child: Image.file(_image!, fit: BoxFit.contain),
+                ),
+                Positioned(
+                  top: 8,
+                  right: 8,
+                  child: GestureDetector(
+                    onTap: _showImageOptions,
+                    child: Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        color: Colors.black54,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: const Icon(
+                        Icons.edit_rounded,
+                        color: Colors.white,
+                        size: 16,
                       ),
                     ),
-                  ],
-                )
-              : Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.image_outlined,
-                          color: Colors.grey[400], size: 30),
-                      const SizedBox(height: 8),
-                      RichText(
-                        text: TextSpan(
-                          style:
-                              TextStyle(fontSize: 13, color: Colors.grey[500]),
-                          children: const [
-                            TextSpan(
-                              text: 'Take a photo',
-                              style: TextStyle(
-                                color: AppColors.teal,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            TextSpan(text: ' or upload from device'),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        'JPG, JPEG, PNG less than 1MB',
-                        style:
-                            TextStyle(fontSize: 11, color: Colors.grey[400]),
-                      ),
-                    ],
                   ),
                 ),
-        ),
-      );
+              ],
+            )
+          : Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.image_outlined, color: Colors.grey[400], size: 30),
+                  const SizedBox(height: 8),
+                  RichText(
+                    text: TextSpan(
+                      style: TextStyle(fontSize: 13, color: Colors.grey[500]),
+                      children: const [
+                        TextSpan(
+                          text: 'Take a photo',
+                          style: TextStyle(
+                            color: AppColors.teal,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        TextSpan(text: ' or upload from device'),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'JPG, JPEG, PNG less than 1MB',
+                    style: TextStyle(fontSize: 11, color: Colors.grey[400]),
+                  ),
+                ],
+              ),
+            ),
+    ),
+  );
 
   Widget _buildDosageBlock(int i) {
     final d = _dosages[i];
@@ -554,66 +575,71 @@ class _CreateAlertPageState extends State<CreateAlertPage> {
   }
 
   Widget _addDosageBtn() => GestureDetector(
-        onTap: () => setState(() => _dosages.add(_DosageData())),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: 24,
-                height: 24,
-                decoration: BoxDecoration(
-                  color: AppColors.teal.withValues(alpha: 0.12),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(Icons.add_rounded,
-                    color: AppColors.teal, size: 16),
-              ),
-              const SizedBox(width: 8),
-              const Text(
-                'Add another dosage',
-                style: TextStyle(
-                  color: AppColors.teal,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14,
-                ),
-              ),
-            ],
+    onTap: () => setState(() => _dosages.add(_DosageData())),
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 24,
+            height: 24,
+            decoration: BoxDecoration(
+              color: AppColors.teal.withValues(alpha: 0.12),
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(
+              Icons.add_rounded,
+              color: AppColors.teal,
+              size: 16,
+            ),
           ),
-        ),
-      );
+          const SizedBox(width: 8),
+          const Text(
+            'Add another dosage',
+            style: TextStyle(
+              color: AppColors.teal,
+              fontWeight: FontWeight.w600,
+              fontSize: 14,
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
 
   Widget _createBtn() => Padding(
-        padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
-        child: SizedBox(
-          width: double.infinity,
-          height: 54,
-          child: ElevatedButton(
-            onPressed: _loading ? null : _submit,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.teal,
-              foregroundColor: Colors.white,
-              disabledBackgroundColor: AppColors.teal.withValues(alpha: 0.6),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16)),
-              elevation: 0,
-            ),
-            child: _loading
-                ? const SizedBox(
-                    width: 22,
-                    height: 22,
-                    child: CircularProgressIndicator(
-                        color: Colors.white, strokeWidth: 2.5),
-                  )
-                : const Text(
-                    'Create Reminder',
-                    style:
-                        TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-                  ),
+    padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
+    child: SizedBox(
+      width: double.infinity,
+      height: 54,
+      child: ElevatedButton(
+        onPressed: _loading ? null : _submit,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.teal,
+          foregroundColor: Colors.white,
+          disabledBackgroundColor: AppColors.teal.withValues(alpha: 0.6),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
           ),
+          elevation: 0,
         ),
-      );
+        child: _loading
+            ? const SizedBox(
+                width: 22,
+                height: 22,
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                  strokeWidth: 2.5,
+                ),
+              )
+            : const Text(
+                'Create Reminder',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+              ),
+      ),
+    ),
+  );
 }
 
 // ── Edit Alert Page ───────────────────────────────────────────────────────────
@@ -655,9 +681,8 @@ class _EditAlertPageState extends State<EditAlertPage> {
     final doseUnit = doseParts.length > 1 ? doseParts[1] : 'Pills';
 
     // Parse meal timing from instructions
-    final mealTiming = (widget.medication.instructions ?? '')
-            .toLowerCase()
-            .contains('before')
+    final mealTiming =
+        (widget.medication.instructions ?? '').toLowerCase().contains('before')
         ? 'before'
         : 'after';
 
@@ -735,11 +760,15 @@ class _EditAlertPageState extends State<EditAlertPage> {
                   color: AppColors.teal.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: const Icon(Icons.camera_alt_outlined,
-                    color: AppColors.teal),
+                child: const Icon(
+                  Icons.camera_alt_outlined,
+                  color: AppColors.teal,
+                ),
               ),
-              title: const Text('Take a photo',
-                  style: TextStyle(fontWeight: FontWeight.w600)),
+              title: const Text(
+                'Take a photo',
+                style: TextStyle(fontWeight: FontWeight.w600),
+              ),
               onTap: () {
                 Navigator.pop(context);
                 _pickImage(ImageSource.camera);
@@ -753,11 +782,15 @@ class _EditAlertPageState extends State<EditAlertPage> {
                   color: AppColors.teal.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: const Icon(Icons.photo_library_outlined,
-                    color: AppColors.teal),
+                child: const Icon(
+                  Icons.photo_library_outlined,
+                  color: AppColors.teal,
+                ),
               ),
-              title: const Text('Upload from device',
-                  style: TextStyle(fontWeight: FontWeight.w600)),
+              title: const Text(
+                'Upload from device',
+                style: TextStyle(fontWeight: FontWeight.w600),
+              ),
               onTap: () {
                 Navigator.pop(context);
                 _pickImage(ImageSource.gallery);
@@ -772,13 +805,18 @@ class _EditAlertPageState extends State<EditAlertPage> {
                     color: AppColors.pinkRed.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: const Icon(Icons.delete_outline_rounded,
-                      color: AppColors.pinkRed),
+                  child: const Icon(
+                    Icons.delete_outline_rounded,
+                    color: AppColors.pinkRed,
+                  ),
                 ),
-                title: const Text('Remove photo',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.pinkRed)),
+                title: const Text(
+                  'Remove photo',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.pinkRed,
+                  ),
+                ),
                 onTap: () {
                   Navigator.pop(context);
                   setState(() {
@@ -890,22 +928,26 @@ class _EditAlertPageState extends State<EditAlertPage> {
       String? imageUrl = _existingImageUrl;
       if (_image != null) {
         try {
-          imageUrl =
-              await repo.uploadMedicationImage(_image!, widget.medication.id);
+          imageUrl = await repo.uploadMedicationImage(
+            _image!,
+            widget.medication.id,
+          );
         } catch (_) {
           // Upload failed — keep existing URL
         }
       }
 
-      await repo.updateMedication(Medication(
-        id: widget.medication.id,
-        patientId: widget.medication.patientId,
-        name: name,
-        dose: _dosages.first.doseLabel,
-        instructions: mealLabel,
-        imageUrl: imageUrl,
-        createdAt: widget.medication.createdAt,
-      ));
+      await repo.updateMedication(
+        Medication(
+          id: widget.medication.id,
+          patientId: widget.medication.patientId,
+          name: name,
+          dose: _dosages.first.doseLabel,
+          instructions: mealLabel,
+          imageUrl: imageUrl,
+          createdAt: widget.medication.createdAt,
+        ),
+      );
 
       // Replace all schedule entries
       for (final entry in widget.entries) {
@@ -942,10 +984,11 @@ class _EditAlertPageState extends State<EditAlertPage> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: const Text('Delete Medication',
-            style: TextStyle(fontWeight: FontWeight.w700)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: const Text(
+          'Delete Medication',
+          style: TextStyle(fontWeight: FontWeight.w700),
+        ),
         content: Text(
           'Remove "${widget.medication.name}" and all its reminders?',
           style: const TextStyle(fontSize: 14),
@@ -953,22 +996,21 @@ class _EditAlertPageState extends State<EditAlertPage> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child:
-                Text('Cancel', style: TextStyle(color: Colors.grey[600])),
+            child: Text('Cancel', style: TextStyle(color: Colors.grey[600])),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            style:
-                TextButton.styleFrom(foregroundColor: AppColors.pinkRed),
-            child: const Text('Delete',
-                style: TextStyle(fontWeight: FontWeight.w700)),
+            style: TextButton.styleFrom(foregroundColor: AppColors.pinkRed),
+            child: const Text(
+              'Delete',
+              style: TextStyle(fontWeight: FontWeight.w700),
+            ),
           ),
         ],
       ),
     );
     if (confirmed == true && mounted) {
-      await MedicationRepository()
-          .deleteMedication(widget.medication.id);
+      await MedicationRepository().deleteMedication(widget.medication.id);
       if (mounted) {
         Navigator.pop(context);
         widget.onSaved?.call();
@@ -980,8 +1022,18 @@ class _EditAlertPageState extends State<EditAlertPage> {
 
   String _fmtDate(DateTime d) {
     const m = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
     ];
     return '${m[d.month - 1]} ${d.day}, ${d.year}';
   }
@@ -1050,67 +1102,77 @@ class _EditAlertPageState extends State<EditAlertPage> {
   }
 
   Widget _buildHeader() => Padding(
-        padding: const EdgeInsets.fromLTRB(4, 12, 4, 12),
-        child: Row(
-          children: [
-            IconButton(
-              icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20),
-              onPressed: () => Navigator.pop(context),
-            ),
-            const Expanded(
-              child: Text(
-                'Edit Alert',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
-              ),
-            ),
-            IconButton(
-              icon: const Icon(Icons.delete_outline_rounded,
-                  color: AppColors.pinkRed, size: 22),
-              onPressed: _loading ? null : _delete,
-            ),
-          ],
+    padding: const EdgeInsets.fromLTRB(4, 12, 4, 12),
+    child: Row(
+      children: [
+        IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20),
+          onPressed: () => Navigator.pop(context),
         ),
-      );
+        const Expanded(
+          child: Text(
+            'Edit Alert',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
+          ),
+        ),
+        IconButton(
+          icon: const Icon(
+            Icons.delete_outline_rounded,
+            color: AppColors.pinkRed,
+            size: 22,
+          ),
+          onPressed: _loading ? null : _delete,
+        ),
+      ],
+    ),
+  );
 
   Widget _sectionLabel(String text) => Text(
-        text,
-        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
-      );
+    text,
+    style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+  );
 
   Widget _nameField() => TextField(
-        controller: _nameCtrl,
-        style: const TextStyle(fontSize: 14),
-        decoration: InputDecoration(
-          hintText: 'Enter medicine name',
-          hintStyle: TextStyle(color: Colors.grey[400], fontSize: 14),
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
-          filled: true,
-          fillColor: Colors.grey[50],
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: Colors.grey[200]!),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: Colors.grey[200]!),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: AppColors.teal, width: 1.5),
-          ),
-        ),
-      );
+    controller: _nameCtrl,
+    style: const TextStyle(fontSize: 14),
+    decoration: InputDecoration(
+      hintText: 'Enter medicine name',
+      hintStyle: TextStyle(color: Colors.grey[400], fontSize: 14),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+      filled: true,
+      fillColor: Colors.grey[50],
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(color: Colors.grey[200]!),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(color: Colors.grey[200]!),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: AppColors.teal, width: 1.5),
+      ),
+    ),
+  );
 
   Widget _imageBox() {
     Widget imageContent;
     if (_image != null) {
-      imageContent = Image.file(_image!, fit: BoxFit.cover,
-          width: double.infinity, height: double.infinity);
+      imageContent = Image.file(
+        _image!,
+        fit: BoxFit.cover,
+        width: double.infinity,
+        height: double.infinity,
+      );
     } else if (_existingImageUrl != null) {
-      imageContent = Image.network(_existingImageUrl!, fit: BoxFit.cover,
-          width: double.infinity, height: double.infinity);
+      imageContent = Image.network(
+        _existingImageUrl!,
+        fit: BoxFit.cover,
+        width: double.infinity,
+        height: double.infinity,
+      );
     } else {
       imageContent = Center(
         child: Column(
@@ -1134,8 +1196,10 @@ class _EditAlertPageState extends State<EditAlertPage> {
               ),
             ),
             const SizedBox(height: 4),
-            Text('JPG, JPEG, PNG less than 1MB',
-                style: TextStyle(fontSize: 11, color: Colors.grey[400])),
+            Text(
+              'JPG, JPEG, PNG less than 1MB',
+              style: TextStyle(fontSize: 11, color: Colors.grey[400]),
+            ),
           ],
         ),
       );
@@ -1169,8 +1233,11 @@ class _EditAlertPageState extends State<EditAlertPage> {
                           color: Colors.black54,
                           borderRadius: BorderRadius.circular(6),
                         ),
-                        child: const Icon(Icons.edit_rounded,
-                            color: Colors.white, size: 16),
+                        child: const Icon(
+                          Icons.edit_rounded,
+                          color: Colors.white,
+                          size: 16,
+                        ),
                       ),
                     ),
                   ),
@@ -1242,67 +1309,71 @@ class _EditAlertPageState extends State<EditAlertPage> {
   }
 
   Widget _addDosageBtn() => GestureDetector(
-        onTap: () => setState(() => _dosages.add(_DosageData())),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: 24,
-                height: 24,
-                decoration: BoxDecoration(
-                  color: AppColors.teal.withValues(alpha: 0.12),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(Icons.add_rounded,
-                    color: AppColors.teal, size: 16),
-              ),
-              const SizedBox(width: 8),
-              const Text(
-                'Add another dosage',
-                style: TextStyle(
-                  color: AppColors.teal,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14,
-                ),
-              ),
-            ],
+    onTap: () => setState(() => _dosages.add(_DosageData())),
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 24,
+            height: 24,
+            decoration: BoxDecoration(
+              color: AppColors.teal.withValues(alpha: 0.12),
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(
+              Icons.add_rounded,
+              color: AppColors.teal,
+              size: 16,
+            ),
           ),
-        ),
-      );
+          const SizedBox(width: 8),
+          const Text(
+            'Add another dosage',
+            style: TextStyle(
+              color: AppColors.teal,
+              fontWeight: FontWeight.w600,
+              fontSize: 14,
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
 
   Widget _saveBtn() => Padding(
-        padding: const EdgeInsets.fromLTRB(20, 8, 20, 4),
-        child: SizedBox(
-          width: double.infinity,
-          height: 54,
-          child: ElevatedButton(
-            onPressed: _loading ? null : _submit,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.teal,
-              foregroundColor: Colors.white,
-              disabledBackgroundColor:
-                  AppColors.teal.withValues(alpha: 0.6),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16)),
-              elevation: 0,
-            ),
-            child: _loading
-                ? const SizedBox(
-                    width: 22,
-                    height: 22,
-                    child: CircularProgressIndicator(
-                        color: Colors.white, strokeWidth: 2.5),
-                  )
-                : const Text(
-                    'Save Changes',
-                    style: TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.w700),
-                  ),
+    padding: const EdgeInsets.fromLTRB(20, 8, 20, 4),
+    child: SizedBox(
+      width: double.infinity,
+      height: 54,
+      child: ElevatedButton(
+        onPressed: _loading ? null : _submit,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.teal,
+          foregroundColor: Colors.white,
+          disabledBackgroundColor: AppColors.teal.withValues(alpha: 0.6),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
           ),
+          elevation: 0,
         ),
-      );
+        child: _loading
+            ? const SizedBox(
+                width: 22,
+                height: 22,
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                  strokeWidth: 2.5,
+                ),
+              )
+            : const Text(
+                'Save Changes',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+              ),
+      ),
+    ),
+  );
 }
 
 // ── Shared wheel picker widget ────────────────────────────────────────────────
@@ -1353,14 +1424,14 @@ class _WheelColumn extends StatelessWidget {
 }
 
 Widget _sheetHandle() => Container(
-      width: 36,
-      height: 4,
-      margin: const EdgeInsets.only(bottom: 4),
-      decoration: BoxDecoration(
-        color: Colors.grey[300],
-        borderRadius: BorderRadius.circular(2),
-      ),
-    );
+  width: 36,
+  height: 4,
+  margin: const EdgeInsets.only(bottom: 4),
+  decoration: BoxDecoration(
+    color: Colors.grey[300],
+    borderRadius: BorderRadius.circular(2),
+  ),
+);
 
 // ── Time picker sheet ─────────────────────────────────────────────────────────
 
@@ -1368,7 +1439,11 @@ class _TimeSheet extends StatefulWidget {
   final int hour;
   final int minute;
   final String period;
-  const _TimeSheet({required this.hour, required this.minute, required this.period});
+  const _TimeSheet({
+    required this.hour,
+    required this.minute,
+    required this.period,
+  });
 
   @override
   State<_TimeSheet> createState() => _TimeSheetState();
@@ -1384,10 +1459,14 @@ class _TimeSheetState extends State<_TimeSheet> {
   late int _minIdx;
   late int _periodIdx;
 
-  static final List<String> _hours =
-      List.generate(12, (i) => (i + 1).toString().padLeft(2, '0'));
-  static final List<String> _minutes =
-      List.generate(60, (i) => i.toString().padLeft(2, '0'));
+  static final List<String> _hours = List.generate(
+    12,
+    (i) => (i + 1).toString().padLeft(2, '0'),
+  );
+  static final List<String> _minutes = List.generate(
+    60,
+    (i) => i.toString().padLeft(2, '0'),
+  );
   static const List<String> _periods = ['AM', 'PM'];
 
   @override
@@ -1421,9 +1500,10 @@ class _TimeSheetState extends State<_TimeSheet> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text('Select time',
-                    style: TextStyle(
-                        fontSize: 17, fontWeight: FontWeight.w700)),
+                const Text(
+                  'Select time',
+                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
+                ),
                 IconButton(
                   onPressed: () => Navigator.pop(context),
                   icon: const Icon(Icons.close_rounded, size: 22),
@@ -1445,24 +1525,31 @@ class _TimeSheetState extends State<_TimeSheet> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     _WheelColumn(
-                        items: _hours,
-                        controller: _hourCtrl,
-                        width: 72,
-                        onChanged: (i) => _hourIdx = i),
-                    const Text(':',
-                        style: TextStyle(
-                            fontSize: 22, fontWeight: FontWeight.w700)),
+                      items: _hours,
+                      controller: _hourCtrl,
+                      width: 72,
+                      onChanged: (i) => _hourIdx = i,
+                    ),
+                    const Text(
+                      ':',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
                     _WheelColumn(
-                        items: _minutes,
-                        controller: _minCtrl,
-                        width: 72,
-                        onChanged: (i) => _minIdx = i),
+                      items: _minutes,
+                      controller: _minCtrl,
+                      width: 72,
+                      onChanged: (i) => _minIdx = i,
+                    ),
                     const SizedBox(width: 8),
                     _WheelColumn(
-                        items: _periods,
-                        controller: _periodCtrl,
-                        width: 60,
-                        onChanged: (i) => _periodIdx = i),
+                      items: _periods,
+                      controller: _periodCtrl,
+                      width: 60,
+                      onChanged: (i) => _periodIdx = i,
+                    ),
                   ],
                 ),
               ],
@@ -1473,21 +1560,24 @@ class _TimeSheetState extends State<_TimeSheet> {
               height: 50,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.pop(
-                    context,
-                    (_hourIdx + 1, _minIdx, _periods[_periodIdx]),
-                  );
+                  Navigator.pop(context, (
+                    _hourIdx + 1,
+                    _minIdx,
+                    _periods[_periodIdx],
+                  ));
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.teal,
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14)),
+                    borderRadius: BorderRadius.circular(14),
+                  ),
                   elevation: 0,
                 ),
-                child: const Text('Save Time',
-                    style: TextStyle(
-                        fontSize: 15, fontWeight: FontWeight.w700)),
+                child: const Text(
+                  'Save Time',
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+                ),
               ),
             ),
           ],
@@ -1515,8 +1605,10 @@ class _DoseSheetState extends State<_DoseSheet> {
   late int _numIdx;
   late int _unitIdx;
 
-  static final List<String> _numbers =
-      List.generate(30, (i) => (i + 1).toString());
+  static final List<String> _numbers = List.generate(
+    30,
+    (i) => (i + 1).toString(),
+  );
   static const List<String> _units = [
     'Pills',
     'Drops',
@@ -1555,9 +1647,10 @@ class _DoseSheetState extends State<_DoseSheet> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text('Select dose',
-                    style: TextStyle(
-                        fontSize: 17, fontWeight: FontWeight.w700)),
+                const Text(
+                  'Select dose',
+                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
+                ),
                 IconButton(
                   onPressed: () => Navigator.pop(context),
                   icon: const Icon(Icons.close_rounded, size: 22),
@@ -1579,16 +1672,18 @@ class _DoseSheetState extends State<_DoseSheet> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     _WheelColumn(
-                        items: _numbers,
-                        controller: _numCtrl,
-                        width: 80,
-                        onChanged: (i) => _numIdx = i),
+                      items: _numbers,
+                      controller: _numCtrl,
+                      width: 80,
+                      onChanged: (i) => _numIdx = i,
+                    ),
                     const SizedBox(width: 8),
                     _WheelColumn(
-                        items: _units,
-                        controller: _unitCtrl,
-                        width: 110,
-                        onChanged: (i) => _unitIdx = i),
+                      items: _units,
+                      controller: _unitCtrl,
+                      width: 110,
+                      onChanged: (i) => _unitIdx = i,
+                    ),
                   ],
                 ),
               ],
@@ -1599,21 +1694,20 @@ class _DoseSheetState extends State<_DoseSheet> {
               height: 50,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.pop(
-                    context,
-                    (_numIdx + 1, _units[_unitIdx]),
-                  );
+                  Navigator.pop(context, (_numIdx + 1, _units[_unitIdx]));
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.teal,
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14)),
+                    borderRadius: BorderRadius.circular(14),
+                  ),
                   elevation: 0,
                 ),
-                child: const Text('Save',
-                    style: TextStyle(
-                        fontSize: 15, fontWeight: FontWeight.w700)),
+                child: const Text(
+                  'Save',
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+                ),
               ),
             ),
           ],
@@ -1642,8 +1736,10 @@ class _FrequencySheetState extends State<_FrequencySheet> {
   late int _numIdx;
   late int _unitIdx;
 
-  static final List<String> _numbers =
-      List.generate(24, (i) => (i + 1).toString());
+  static final List<String> _numbers = List.generate(
+    24,
+    (i) => (i + 1).toString(),
+  );
   static const List<String> _units = ['Hour', 'Day', 'Week'];
 
   @override
@@ -1655,7 +1751,8 @@ class _FrequencySheetState extends State<_FrequencySheet> {
       final parts = widget.current.split(' ');
       if (parts.length >= 3) {
         final parsed = int.tryParse(parts[1]);
-        if (parsed != null) _numIdx = (parsed - 1).clamp(0, _numbers.length - 1);
+        if (parsed != null)
+          _numIdx = (parsed - 1).clamp(0, _numbers.length - 1);
         final unitStr = parts[2].replaceAll('s', '');
         final unitI = _units.indexOf(unitStr);
         if (unitI >= 0) _unitIdx = unitI;
@@ -1688,9 +1785,10 @@ class _FrequencySheetState extends State<_FrequencySheet> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text('Set frequency',
-                    style:
-                        TextStyle(fontSize: 17, fontWeight: FontWeight.w700)),
+                const Text(
+                  'Set frequency',
+                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
+                ),
                 IconButton(
                   onPressed: () => Navigator.pop(context),
                   icon: const Icon(Icons.close_rounded, size: 22),
@@ -1730,23 +1828,28 @@ class _FrequencySheetState extends State<_FrequencySheet> {
                     children: [
                       const Padding(
                         padding: EdgeInsets.only(right: 8),
-                        child: Text('Every',
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black54)),
+                        child: Text(
+                          'Every',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black54,
+                          ),
+                        ),
                       ),
                       _WheelColumn(
-                          items: _numbers,
-                          controller: _numCtrl,
-                          width: 64,
-                          onChanged: (i) => _numIdx = i),
+                        items: _numbers,
+                        controller: _numCtrl,
+                        width: 64,
+                        onChanged: (i) => _numIdx = i,
+                      ),
                       const SizedBox(width: 4),
                       _WheelColumn(
-                          items: _units,
-                          controller: _unitCtrl,
-                          width: 80,
-                          onChanged: (i) => _unitIdx = i),
+                        items: _units,
+                        controller: _unitCtrl,
+                        width: 80,
+                        onChanged: (i) => _unitIdx = i,
+                      ),
                     ],
                   ),
                 ],
@@ -1757,12 +1860,13 @@ class _FrequencySheetState extends State<_FrequencySheet> {
                 style: const TextStyle(fontSize: 14),
                 decoration: InputDecoration(
                   hintText: 'e.g. Twice a week, As needed...',
-                  hintStyle:
-                      TextStyle(color: Colors.grey[400], fontSize: 13),
+                  hintStyle: TextStyle(color: Colors.grey[400], fontSize: 13),
                   filled: true,
                   fillColor: Colors.grey[50],
                   contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 14, vertical: 14),
+                    horizontal: 14,
+                    vertical: 14,
+                  ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide(color: Colors.grey[200]!),
@@ -1773,8 +1877,10 @@ class _FrequencySheetState extends State<_FrequencySheet> {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide:
-                        const BorderSide(color: AppColors.teal, width: 1.5),
+                    borderSide: const BorderSide(
+                      color: AppColors.teal,
+                      width: 1.5,
+                    ),
                   ),
                 ),
               ),
@@ -1801,12 +1907,14 @@ class _FrequencySheetState extends State<_FrequencySheet> {
                   backgroundColor: AppColors.teal,
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14)),
+                    borderRadius: BorderRadius.circular(14),
+                  ),
                   elevation: 0,
                 ),
-                child: const Text('Save',
-                    style: TextStyle(
-                        fontSize: 15, fontWeight: FontWeight.w700)),
+                child: const Text(
+                  'Save',
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+                ),
               ),
             ),
           ],
@@ -1820,29 +1928,32 @@ class _TabBtn extends StatelessWidget {
   final String label;
   final bool selected;
   final VoidCallback onTap;
-  const _TabBtn(
-      {required this.label, required this.selected, required this.onTap});
+  const _TabBtn({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) => GestureDetector(
-        onTap: onTap,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 180),
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
-          decoration: BoxDecoration(
-            color: selected ? AppColors.teal : Colors.grey[100],
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Text(
-            label,
-            style: TextStyle(
-              color: selected ? Colors.white : Colors.grey[600],
-              fontWeight: FontWeight.w600,
-              fontSize: 13,
-            ),
-          ),
+    onTap: onTap,
+    child: AnimatedContainer(
+      duration: const Duration(milliseconds: 180),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
+      decoration: BoxDecoration(
+        color: selected ? AppColors.teal : Colors.grey[100],
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(
+          color: selected ? Colors.white : Colors.grey[600],
+          fontWeight: FontWeight.w600,
+          fontSize: 13,
         ),
-      );
+      ),
+    ),
+  );
 }
 
 // ── Shared selector card ──────────────────────────────────────────────────────
@@ -1862,46 +1973,52 @@ class _SelectorCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => GestureDetector(
-        onTap: onTap,
-        child: Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: Colors.grey[50],
-            border: Border.all(color: Colors.grey[200]!),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    onTap: onTap,
+    child: Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.grey[50],
+        border: Border.all(color: Colors.grey[200]!),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
             children: [
-              Row(
-                children: [
-                  Text(label,
-                      style: const TextStyle(
-                          fontSize: 12, fontWeight: FontWeight.w600)),
-                  const Spacer(),
-                  Icon(Icons.chevron_right_rounded,
-                      size: 16, color: Colors.grey[400]),
-                ],
+              Text(
+                label,
+                style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
-              const SizedBox(height: 6),
-              Row(
-                children: [
-                  Icon(icon, size: 14, color: Colors.grey[400]),
-                  const SizedBox(width: 6),
-                  Expanded(
-                    child: Text(
-                      value,
-                      style:
-                          TextStyle(fontSize: 12, color: Colors.grey[600]),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
+              const Spacer(),
+              Icon(
+                Icons.chevron_right_rounded,
+                size: 16,
+                color: Colors.grey[400],
               ),
             ],
           ),
-        ),
-      );
+          const SizedBox(height: 6),
+          Row(
+            children: [
+              Icon(icon, size: 14, color: Colors.grey[400]),
+              const SizedBox(width: 6),
+              Expanded(
+                child: Text(
+                  value,
+                  style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
 }
 
 // ── Meal toggle button ────────────────────────────────────────────────────────
@@ -1911,30 +2028,33 @@ class _MealBtn extends StatelessWidget {
   final bool selected;
   final VoidCallback onTap;
 
-  const _MealBtn(
-      {required this.label, required this.selected, required this.onTap});
+  const _MealBtn({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) => GestureDetector(
-        onTap: onTap,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 180),
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
-          decoration: BoxDecoration(
-            color: selected ? AppColors.teal : Colors.white,
-            border: Border.all(
-              color: selected ? AppColors.teal : Colors.grey[300]!,
-            ),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Text(
-            label,
-            style: TextStyle(
-              color: selected ? Colors.white : Colors.grey[600],
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
+    onTap: onTap,
+    child: AnimatedContainer(
+      duration: const Duration(milliseconds: 180),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
+      decoration: BoxDecoration(
+        color: selected ? AppColors.teal : Colors.white,
+        border: Border.all(
+          color: selected ? AppColors.teal : Colors.grey[300]!,
         ),
-      );
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(
+          color: selected ? Colors.white : Colors.grey[600],
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    ),
+  );
 }
